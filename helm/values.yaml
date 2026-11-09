@@ -1,0 +1,61 @@
+deployment:
+  replicas: 2
+providers:
+  kubernetesIngress:
+    enabled: false
+  kubernetesCRD:
+    enabled: true
+  kubernetesGateway:
+    enabled: true
+gateway:
+  enabled: false
+service:
+  type: ClusterIP
+ports:
+  web:
+    port: 8000
+    expose:
+      default: true
+    exposedPort: 80
+  websecure:
+    port: 8443
+    expose:
+      default: true
+    exposedPort: 443
+logs:
+  access:
+    enabled: true
+    format: json
+resources:
+  requests:
+    cpu: 250m
+    memory: 256Mi
+  limits:
+    cpu: '2'
+    memory: 1Gi
+
+# Internal dashboard: only reachable through ClusterIP + kubectl port-forward.
+api:
+  dashboard: true
+  insecure: false
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: 'Host(`dashboard.traefik.test`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`))'
+    entryPoints:
+      - web
+
+# HTTP/connection telemetry. The metrics service is ClusterIP-only.
+metrics:
+  prometheus:
+    addEntryPointsLabels: true
+    addRoutersLabels: true
+    addServicesLabels: true
+    buckets: '0.005,0.01,0.025,0.05,0.1,0.25,0.5,1,2,5,10'
+    service:
+      enabled: true
+    serviceMonitor:
+      enabled: true
+      interval: 15s
+      additionalLabels:
+        release: traefik-monitoring

@@ -1,0 +1,81 @@
+id,feature,priority,implementation_path_candidate,verification,result,notes
+F01,HTTP routing,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F02,HTTP redirect,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F03,Load balancing algorithms,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F04,Weighted traffic splitting,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F05,Local rate limit,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F06,Global rate limit,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F07,HTTP timeouts,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F08,Retry,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F09,Circuit breaker,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F10,TLS termination,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F11,Backend TLS,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F12,cert-manager integration,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F13,JWT authentication,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F14,API key authentication,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F15,External authorization,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F16,IP allowlist/denylist,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F17,HTTP/1.1 & HTTP/2,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F18,Gateway controller metrics,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F19,Envoy Proxy metrics,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F20,Proxy access logs,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F21,Proxy tracing,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F22,Grafana dashboards,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F23,GatewayClass/Gateway management,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F24,EnvoyProxy customization,P0,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F25,Graceful shutdown/upgrades,P0,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F26,GitOps automation,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F27,Autoscaling and capacity,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F28,URL rewrite,P1,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F29,Request headers,P1,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F30,Response headers,P1,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F31,Request mirroring,P1,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F32,Session persistence,P1,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F33,Consistent hash,P1,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F34,Backend failover,P1,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F35,Backend routing,P1,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F36,External backends,P1,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F37,Connection limit,P1,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F38,gRPC timeouts,P1,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F39,Response compression,P1,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F40,TLS passthrough,P1,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F41,Client mutual TLS,P1,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F42,Backend mutual TLS,P1,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F43,JWT claim authorization,P1,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F44,OIDC authentication,P1,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F45,CORS,P1,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F46,Header/method authorization,P1,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F47,CSRF protection,P1,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F48,gRPC routing,P1,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F49,Rate limit observability,P1,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F50,Gateway API metadata,P1,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F51,Deployment modes,P1,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F52,egctl diagnostics,P1,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F53,Backend utilization LB,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F54,Zone-aware routing,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F55,Multicluster routing,P2,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F56,Bandwidth limit,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F57,Request buffering,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F58,Response override,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F59,Direct response,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F60,Fault injection,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F61,Host normalization,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F62,Basic authentication,P2,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F63,GeoIP authorization,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F64,Credential injection,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F65,HTTP/3,P2,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F66,TCP routing,P2,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F67,UDP routing,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F68,TLS termination for TCP,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F69,Lua extensions,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F70,WebAssembly extensions,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F71,External processing (ext_proc),P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F72,OPA integration,P2,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F73,Health check logs,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F74,Gateway namespace mode,P2,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F75,Air-gapped deployment,P2,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F76,TLS private key provider,P3,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F77,HTTP CONNECT tunnels,P3,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F78,Extension server,P3,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F79,EnvoyPatchPolicy,P3,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F80,Dynamic modules,P3,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test

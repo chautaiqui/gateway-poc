@@ -1,0 +1,10 @@
+# This file is an overlay on helm/values.yaml; not stand-alone.
+# Existing Helm release: traefik-poc in namespace traefik-poc.
+# Explicit resources and stable replicas for performance tests.
+deployment:
+  replicas: 2
+resources:
+  requests: {cpu: '2', memory: 2Gi}
+  limits: {cpu: '4', memory: 4Gi}
+# Ensure 8443 is exposed through the websecure entrypoint; existing values already do so.
+# Keep prometheus scrape enabled. Dashboard is only accessible via port-forward.

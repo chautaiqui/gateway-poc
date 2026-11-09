@@ -1,0 +1,21 @@
+# Applied only in production-like mode. Replaces the baseline Traefik HTTPRoute.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: traefik-bench
+  namespace: gateway-bench
+spec:
+  parentRefs:
+  - name: traefik-bench
+    sectionName: https
+  hostnames: [bench.dev.local]
+  rules:
+  - matches:
+    - path: {type: PathPrefix, value: /}
+    filters:
+    - type: ExtensionRef
+      extensionRef: {group: traefik.io, kind: Middleware, name: bench-ratelimit}
+    - type: ExtensionRef
+      extensionRef: {group: traefik.io, kind: Middleware, name: bench-retry}
+    backendRefs: [{name: echo, port: 80}]
+    timeouts: {request: 5s, backendRequest: 4s}

@@ -1,0 +1,22 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: bench-ratelimit
+  namespace: gateway-bench
+spec:
+  # Per Traefik proxy, NOT cluster global. Not perfectly equivalent to Envoy bucket.
+  rateLimit:
+    average: 10000
+    period: 1s
+    burst: 20000
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: bench-retry
+  namespace: gateway-bench
+spec:
+  # Traefik Retry handles failures contacting upstream; it does NOT retry arbitrary HTTP 503.
+  retry:
+    attempts: 3 # Initial + 2 retries (subject to Traefik semantics)
+    initialInterval: 50ms
