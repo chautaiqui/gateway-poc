@@ -1,0 +1,397 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-bench-comparison-dashboard
+  namespace: traefik-monitoring
+  labels:
+    grafana_dashboard: "1"
+data:
+  gateway-bench-comparison.json: |
+    {
+      "uid": "gateway-bench-compare",
+      "title": "Gateway Benchmark: Envoy vs Traefik",
+      "tags": [
+        "gateway",
+        "benchmark",
+        "envoy",
+        "traefik"
+      ],
+      "timezone": "browser",
+      "schemaVersion": 39,
+      "version": 1,
+      "refresh": "15s",
+      "time": {
+        "from": "now-30m",
+        "to": "now"
+      },
+      "panels": [
+        {
+          "id": 1,
+          "type": "timeseries",
+          "title": "Requests / sec (total)",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 0
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": {
+                "lineWidth": 2,
+                "fillOpacity": 10
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(envoy_http_downstream_rq_xx{envoy_http_conn_manager_prefix=~\"http-.*|https-.*\"}[2m]))",
+              "refId": "A",
+              "legendFormat": "Envoy"
+            },
+            {
+              "expr": "sum(rate(traefik_entrypoint_requests_total[2m]))",
+              "refId": "B",
+              "legendFormat": "Traefik"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "type": "timeseries",
+          "title": "5xx rate",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 0
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": {
+                "lineWidth": 2,
+                "fillOpacity": 10
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(envoy_http_downstream_rq_xx{envoy_response_code_class=\"5\",envoy_http_conn_manager_prefix=~\"http-.*|https-.*\"}[2m]))",
+              "refId": "A",
+              "legendFormat": "Envoy 5xx"
+            },
+            {
+              "expr": "sum(rate(traefik_entrypoint_requests_total{code=~\"5..\"}[2m]))",
+              "refId": "B",
+              "legendFormat": "Traefik 5xx"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "type": "timeseries",
+          "title": "p95 latency",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "custom": {
+                "lineWidth": 2,
+                "fillOpacity": 10
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.95, sum by (le)(rate(envoy_http_downstream_rq_time_bucket{envoy_http_conn_manager_prefix=~\"http-.*|https-.*\"}[5m])))/1000",
+              "refId": "A",
+              "legendFormat": "Envoy"
+            },
+            {
+              "expr": "histogram_quantile(0.95, sum by (le)(rate(traefik_entrypoint_request_duration_seconds_bucket[5m])))",
+              "refId": "B",
+              "legendFormat": "Traefik"
+            }
+          ]
+        },
+        {
+          "id": 4,
+          "type": "timeseries",
+          "title": "p99 latency",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 8
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "s",
+              "custom": {
+                "lineWidth": 2,
+                "fillOpacity": 10
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          },
+          "targets": [
+            {
+              "expr": "histogram_quantile(0.99, sum by (le)(rate(envoy_http_downstream_rq_time_bucket{envoy_http_conn_manager_prefix=~\"http-.*|https-.*\"}[5m])))/1000",
+              "refId": "A",
+              "legendFormat": "Envoy"
+            },
+            {
+              "expr": "histogram_quantile(0.99, sum by (le)(rate(traefik_entrypoint_request_duration_seconds_bucket[5m])))",
+              "refId": "B",
+              "legendFormat": "Traefik"
+            }
+          ]
+        },
+        {
+          "id": 5,
+          "type": "timeseries",
+          "title": "Data-plane CPU (cores)",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 16
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": {
+                "lineWidth": 2,
+                "fillOpacity": 10
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"envoy-gateway-system\",pod=~\"envoy-gateway-bench-envoy-bench.*\",container=\"envoy\"}[2m]))",
+              "refId": "A",
+              "legendFormat": "Envoy"
+            },
+            {
+              "expr": "sum(rate(container_cpu_usage_seconds_total{namespace=\"traefik-poc\",pod=~\"traefik-poc-.*\",container=\"traefik-poc\"}[2m]))",
+              "refId": "B",
+              "legendFormat": "Traefik"
+            }
+          ]
+        },
+        {
+          "id": 6,
+          "type": "timeseries",
+          "title": "Data-plane memory",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 16
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "bytes",
+              "custom": {
+                "lineWidth": 2,
+                "fillOpacity": 10
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(container_memory_working_set_bytes{namespace=\"envoy-gateway-system\",pod=~\"envoy-gateway-bench-envoy-bench.*\",container=\"envoy\"})",
+              "refId": "A",
+              "legendFormat": "Envoy"
+            },
+            {
+              "expr": "sum(container_memory_working_set_bytes{namespace=\"traefik-poc\",pod=~\"traefik-poc-.*\",container=\"traefik-poc\"})",
+              "refId": "B",
+              "legendFormat": "Traefik"
+            }
+          ]
+        },
+        {
+          "id": 7,
+          "type": "timeseries",
+          "title": "Active downstream connections",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 0,
+            "y": 24
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "short",
+              "custom": {
+                "lineWidth": 2,
+                "fillOpacity": 10
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(envoy_http_downstream_cx_active{envoy_http_conn_manager_prefix=~\"http-.*|https-.*\"})",
+              "refId": "A",
+              "legendFormat": "Envoy"
+            },
+            {
+              "expr": "sum(traefik_open_connections)",
+              "refId": "B",
+              "legendFormat": "Traefik"
+            }
+          ]
+        },
+        {
+          "id": 8,
+          "type": "timeseries",
+          "title": "2xx rate",
+          "gridPos": {
+            "h": 8,
+            "w": 12,
+            "x": 12,
+            "y": 24
+          },
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "reqps",
+              "custom": {
+                "lineWidth": 2,
+                "fillOpacity": 10
+              }
+            },
+            "overrides": []
+          },
+          "options": {
+            "legend": {
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "multi"
+            }
+          },
+          "targets": [
+            {
+              "expr": "sum(rate(envoy_http_downstream_rq_xx{envoy_response_code_class=\"2\",envoy_http_conn_manager_prefix=~\"http-.*|https-.*\"}[2m]))",
+              "refId": "A",
+              "legendFormat": "Envoy 2xx"
+            },
+            {
+              "expr": "sum(rate(traefik_entrypoint_requests_total{code=~\"2..\"}[2m]))",
+              "refId": "B",
+              "legendFormat": "Traefik 2xx"
+            }
+          ]
+        }
+      ]
+    }

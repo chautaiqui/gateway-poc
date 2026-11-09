@@ -1,0 +1,43 @@
+# Wire Envoy Gateway into the SHARED kube-prometheus-stack (release: traefik-monitoring).
+# Prometheus selects monitors by label release=traefik-monitoring (namespace selector is open),
+# so both objects below carry that label. This does NOT touch the existing Traefik ServiceMonitor.
+---
+# Envoy data-plane (proxy) metrics: RPS, per-status, latency histogram, connections, memory.
+# Exposed by each managed Envoy proxy pod on container port 19001 at /stats/prometheus.
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: envoy-proxy
+  namespace: envoy-gateway-system
+  labels:
+    release: traefik-monitoring
+spec:
+  namespaceSelector:
+    matchNames: [envoy-gateway-system]
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: envoy
+      app.kubernetes.io/component: proxy
+  podMetricsEndpoints:
+  - port: metrics
+    path: /stats/prometheus
+    interval: 15s
+---
+# Envoy Gateway control-plane (controller) metrics on service port 19001 at /metrics.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: envoy-gateway-controller
+  namespace: envoy-gateway-system
+  labels:
+    release: traefik-monitoring
+spec:
+  namespaceSelector:
+    matchNames: [envoy-gateway-system]
+  selector:
+    matchLabels:
+      control-plane: envoy-gateway
+  endpoints:
+  - port: metrics
+    path: /metrics
+    interval: 15s

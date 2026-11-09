@@ -1,27 +1,27 @@
 id,feature,priority,implementation_path_candidate,verification,result,notes
-F01,HTTP routing,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F01,HTTP routing,P0,Gateway API,TESTED,PASS,"Verified 2026-11-10 in ns gateway-bench: HTTP routing via both envoy-dev and traefik-poc Gateways, HTTP 200 to echo; sustained 14k-37k RPS (see docs/benchmark-results.csv)."
 F02,HTTP redirect,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F03,Load balancing algorithms,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F04,Weighted traffic splitting,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F05,Local rate limit,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F06,Global rate limit,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
-F07,HTTP timeouts,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F07,HTTP timeouts,P0,Gateway API,TESTED,PARTIAL,"HTTPRoute request:5s/backendRequest:4s accepted (Accepted=True,ResolvedRefs=True) on both 2026-11-10; not yet exercised against a slow backend."
 F08,Retry,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F09,Circuit breaker,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
-F10,TLS termination,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F10,TLS termination,P0,Gateway API,TESTED,PASS,Verified 2026-11-10: HTTPS listeners Programmed=True on both Gateways; curl -k https returns 200 via self-signed bench-tls.
 F11,Backend TLS,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F12,cert-manager integration,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F13,JWT authentication,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F14,API key authentication,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F15,External authorization,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F16,IP allowlist/denylist,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
-F17,HTTP/1.1 & HTTP/2,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
-F18,Gateway controller metrics,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
-F19,Envoy Proxy metrics,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F17,HTTP/1.1 & HTTP/2,P0,Gateway API,TESTED,PARTIAL,HTTP/1.1 verified under load 2026-11-10; HTTP/2 not yet tested.
+F18,Gateway controller metrics,P0,External integration,TESTED,PASS,Verified 2026-11-10: shared Prometheus scrapes Traefik entrypoint metrics and Envoy Gateway controller /metrics; targets UP.
+F19,Envoy Proxy metrics,P0,External integration,TESTED,PASS,Verified 2026-11-10: Envoy proxy /stats/prometheus scraped (PodMonitor) and Traefik proxy metrics scraped; both in shared Prometheus.
 F20,Proxy access logs,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F21,Proxy tracing,P0,Traefik CRD / configuration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
-F22,Grafana dashboards,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
-F23,GatewayClass/Gateway management,P0,Gateway API,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
+F22,Grafana dashboards,P0,External integration,TESTED,PASS,Verified 2026-11-10: combined Grafana dashboard 'Gateway Benchmark: Envoy vs Traefik' (uid gateway-bench-compare) imported; RPS/5xx/p95/p99/CPU/RAM/connections for both.
+F23,GatewayClass/Gateway management,P0,Gateway API,TESTED,PASS,Verified 2026-11-10: GatewayClasses envoy-dev and traefik-poc Accepted=True; Gateways envoy-bench/traefik-bench provisioned (listeners Programmed=True).
 F24,EnvoyProxy customization,P0,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F25,Graceful shutdown/upgrades,P0,Gap / investigate,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test
 F26,GitOps automation,P0,External integration,NOT_TESTED,NOT_VERIFIED,Candidate classification only; do not count as supported before test

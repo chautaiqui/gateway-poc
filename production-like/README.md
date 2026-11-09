@@ -14,6 +14,31 @@
 - HTTPRoute timeouts capability depends on Traefik/Kubernetes Gateway API versions; ensure route `Accepted=True`, `ResolvedRefs=True`, and test a slow backend before claiming parity.
 - Do not run original `labs/` and this overlay as a single feature demo; separate namespaces, hosts and policies.
 
+## Install Envoy Gateway (if not already present)
+
+If the cluster has no Envoy Gateway yet, install it without clobbering existing Gateway API CRDs:
+
+```bash
+bash production-like/scripts/install-envoy-gateway.sh   # applies envoyproxy.io CRDs, controller, GatewayClass envoy-dev
+```
+
+This skips the chart's bundled Gateway API CRDs (kept at the cluster's existing version) and
+creates GatewayClass `envoy-dev`. Pin `EG_VERSION` for reproducibility.
+
+## Automated isolated benchmark ("turn one off while benchmarking the other")
+
+`scripts/bench-isolated.sh` benchmarks each gateway with the **other scaled to 0 replicas**,
+pins the active gateway to 1 replica, drives load with `hey` over the plain-HTTP listener, and
+appends throughput/latency/status plus Prometheus-sourced CPU & RAM to `docs/benchmark-results.csv`:
+
+```bash
+CONCURRENCIES='50 200 500' DURATION_S=20 bash production-like/scripts/bench-isolated.sh
+```
+
+Results summary: [../docs/benchmark-results.md](../docs/benchmark-results.md). Both gateways
+expose an extra plain-HTTP listener (Envoy :80, Traefik :8000 → Service :80) so a `hey` build
+without `-insecure` can benchmark without TLS trust. HTTPS listeners remain for functional tests.
+
 ## Run
 
 ```bash
@@ -59,7 +84,17 @@ curl -k https://bench.dev.local:9443/
 
 ## Monitoring
 
-Existing `monitoring/` in parent repo scrapes Traefik only. **It does not automatically scrape Envoy**. To use a shared Prometheus, configure discovery for both the Envoy **controller** and **proxy** Prometheus endpoints in their real namespaces; check `/targets` is UP. Use same scrape interval 15s. The existing Grafana dashboard is Traefik-focused and should not be presented as a validated Envoy-vs-Traefik comparison dashboard.
+Envoy is wired into the SAME kube-prometheus-stack as Traefik by `../monitoring/envoy/scrape.yaml`
+(a PodMonitor for the Envoy proxy `/stats/prometheus` + a ServiceMonitor for the controller
+`/metrics`, both carrying `release: traefik-monitoring` so the shared Prometheus selects them):
+
+```bash
+kubectl apply -f monitoring/envoy/scrape.yaml   # from repo root
+```
+
+A combined Grafana dashboard **Gateway Benchmark: Envoy vs Traefik** (`../monitoring/grafana/comparison-dashboard.yaml`,
+uid `gateway-bench-compare`) overlays RPS, 5xx, p95/p99, CPU, RAM and active connections for both.
+Confirm all targets are UP in Prometheus **Status > Targets** (same 15s interval) before trusting panels.
 
 Must record: successful requests/sec, 2xx/4xx/5xx/429, p50/p95/p99, Envoy/Traefik CPU and RSS, backend CPU, active connections, generator saturation, dropped requests. **503 responses previously observed should be split by origin** (gateway vs backend vs load-generator failure) before ranking.
 

@@ -16,6 +16,13 @@ spec:
       certificateRefs: [{kind: Secret, name: bench-tls}]
     allowedRoutes:
       namespaces: {from: Same}
+  # Plain-HTTP listener for throughput benchmarking (no TLS handshake variance).
+  - name: http
+    hostname: bench.dev.local
+    protocol: HTTP
+    port: 80
+    allowedRoutes:
+      namespaces: {from: Same}
 ---
 # Uses GatewayClass already defined by existing base/gateway.yaml.
 apiVersion: gateway.networking.k8s.io/v1
@@ -33,5 +40,12 @@ spec:
     tls:
       mode: Terminate
       certificateRefs: [{kind: Secret, name: bench-tls}]
+    allowedRoutes:
+      namespaces: {from: Same}
+  # Plain-HTTP listener on the Traefik web entrypoint internal port 8000 (Service exposes 80).
+  - name: http
+    hostname: bench.dev.local
+    protocol: HTTP
+    port: 8000
     allowedRoutes:
       namespaces: {from: Same}

@@ -7,6 +7,8 @@ spec:
   parentRefs:
   - name: envoy-bench
     sectionName: https
+  - name: envoy-bench
+    sectionName: http
   hostnames: [bench.dev.local]
   rules:
   - matches:
@@ -27,6 +29,8 @@ spec:
   parentRefs:
   - name: traefik-bench
     sectionName: https
+  - name: traefik-bench
+    sectionName: http
   hostnames: [bench.dev.local]
   rules:
   - matches:
