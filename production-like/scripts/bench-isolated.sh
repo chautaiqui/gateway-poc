@@ -31,8 +31,9 @@ for b in kubectl hey curl python3; do command -v "$b" >/dev/null || { echo "$b r
 
 ENVOY_DEP="$(kubectl -n "$NS_ENVOY" get deploy -l gateway.envoyproxy.io/owning-gateway-name=envoy-bench -o jsonpath='{.items[0].metadata.name}')"
 [ -n "$ENVOY_DEP" ] || { echo 'Envoy proxy deployment not found; deploy baseline first' >&2; exit 1; }
-ENVOY_VER="$(kubectl -n "$NS_ENVOY" get deploy "$ENVOY_DEP" -o jsonpath='{.spec.template.spec.containers[?(@.name=="envoy")].image}' | sed 's/.*://')"
-TRAEFIK_VER="$(kubectl -n "$NS_TRAEFIK" get deploy traefik-poc -o jsonpath='{.spec.template.spec.containers[0].image}' | sed 's/.*://')"
+# Image tag only: strip any @sha256 digest suffix, then take the tag after the last colon.
+ENVOY_VER="$(kubectl -n "$NS_ENVOY" get deploy "$ENVOY_DEP" -o jsonpath='{.spec.template.spec.containers[?(@.name=="envoy")].image}' | sed -E 's/@sha256:[0-9a-f]+$//; s/.*://')"
+TRAEFIK_VER="$(kubectl -n "$NS_TRAEFIK" get deploy traefik-poc -o jsonpath='{.spec.template.spec.containers[0].image}' | sed -E 's/@sha256:[0-9a-f]+$//; s/.*://')"
 
 # Prometheus access via background port-forward.
 kubectl -n "$NS_MON" port-forward "svc/$PROM_SVC" 9090:9090 >/tmp/bench-prom.log 2>&1 &
